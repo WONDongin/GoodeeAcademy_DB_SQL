@@ -3,7 +3,7 @@ SELECT empno 사원번호,ename 사원명,job 직급 FROM emp;
 -- 2. dept 테이블에서 deptno 부서#, dname 부서명, loc 부서위치로 별칭을 설정하여 조회하기
 SELECT deptno '부서#',dname 부서명,loc 부서위치 FROM dept;
 -- 3. 학생들을 지도하는 지도교수번호(profno) 조회하기
-SELECT profno FROM student WHERE profno IS NOT null;
+SELECT DISTINCT profno FROM student WHERE profno IS NOT null;
 /*
 4. 학생테이블에서 name, birthday,height,weight 컬럼을 조회하기 
      단 name은 이름, birthday는 생년월일 ,height 키(cm),weight 몸무게(kg) 으로 변경하여 조회하기 
