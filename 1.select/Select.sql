@@ -73,7 +73,7 @@ SELECT ename,salary,salary*1.1 FROM emp WHERE salary*1.1 < 1000;
 -- 급여가 700이하 5%인상, 사원의 이름,예상급여,부서코드
 SELECT ename 사원이름,salary 현재급여,salary*0.05+salary 인상예상급여,deptno 부서코드  FROM emp WHERE salary <= 700;
 -- 생일이 2005-06-30 이후 출생한 1학년, 학생의 이름, 학과코드,생일,학년
-SELECT NAME,major1,birthday,grade From student WHERE grade=1 AND birthday >= 1995-06-30; 
+SELECT NAME,major1,birthday,grade From student WHERE grade=1 AND birthday > '1995-06-30 00:00:00'; 
 
 /*
 where 조건문에서 사용되는 연산자 : 
@@ -189,5 +189,5 @@ UNION ALL SELECT studno,NAME,major1 FROM student WHERE major2 = 101;
 SELECT studno,NAME,major1 FROM student WHERE major1 = 202 
 UNION SELECT studno,NAME,major1 FROM student WHERE major2 = 101;
 
-SELECT NO,NAME,salary,salary*0.5 인상예정급여 FROM professor WHERE salary >= 450  UNION ALL
-SELECT NO,NAME,salary,salary*1.1 인상예정급여 FROM professor WHERE salary < 450 ORDER BY salary*0.5 DESC,salary*1.1 DESC;
+SELECT NO,NAME,salary,salary*1.05 인상예정급여 FROM professor WHERE salary >= 450  UNION ALL
+SELECT NO,NAME,salary,salary*1.1 인상예정급여 FROM professor WHERE salary < 450 ORDER BY 인상예정급여 DESC;

@@ -10,13 +10,13 @@ SELECT profno FROM student WHERE profno IS NOT null;
 */ 
 SELECT NAME 이름,birthday 생년월일,height '키(cm)',weight '몸무게(kg)' FROM student;     
 -- 5.  emp 테이블에서 급여가 800보다 큰사람의 이름, 급여(salary), 부서코드(deptno) 조회하기
-SELECT ename,salary,deptno FROM emp WHERE salary > 800;
+SELECT ename 이름,salary 급여,deptno 부서코드 FROM emp WHERE salary > 800;
 -- 6.  professor 테이블에서 직급(position)이 정교수인 교수의 이름(name),부서코드(deptno),직급(position) 조회하기 
 SELECT NAME,deptno,POSITION FROM professor WHERE POSITION = '정교수';       
 -- 7. 전공1이 101번,201 학과의 학생 중 몸무게가 50이상 80이하인 학생의 이름(name), 몸무게(weight), 학과코드(major1)를 조회하기 
 SELECT NAME 이름,weight 몸무게,major1 학과코드 FROM student WHERE major1 IN (101,201) AND weight >= 50 AND weight <= 80;
 -- 8. 사원의 급여가 700이상인 사원들만 급여를 5% 인상하기로 한다.    인상되는 사원의 이름, 현재급여, 예상인상급여, 부서코드 출력하기
-SELECT ename 이름,salary 현재급여,salary*0.5+salary 예상인상급여,deptno 부서코드 FROM emp WHERE salary >= 700;
+SELECT ename 이름,salary 현재급여,salary*1.05 예상인상급여,deptno 부서코드 FROM emp WHERE salary >= 700;
 /*
 9. 학생테이블에서 생일이 1998년 6월 30일 이후에 출생한 학생 중 
   1학년 학생인, 이름(name), 전공코드(major1), 생일(birthday), 학년(grade) 컬럼 조회하기
