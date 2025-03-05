@@ -16,13 +16,14 @@ SELECT NAME, '학생' FROM student
 
 -- 1. 교수 테이블(professor)의 구조 조회하기
 DESC professor
+
 -- 2. 교수 테이블(professor)의 교수번호(no),교수이름(name),'교수' 문자열을 붙여서 조회하기
 -- 문자열형 상수: 작은따옴표, 큰따옴표 동일하다.
 -- 오라클db에서는 작은따옴표만 가능함.
 SELECT NO,NAME,'교수' FROM professor;
 SELECT NO,NAME,"교수" FROM professor;
 
--- 컬럼에 별명(alias)설정하기 : 조회되는 컬럼명을 변경하기
+-- 컬럼에 별명(alias) 설정하기 : 조회되는 컬럼명을 변경하기
 SELECT NO 교수번호,NAME 교수이름,'교수' FROM professor;
 SELECT NO '교수번호',NAME 교수이름,'교수' FROM professor;
 SELECT NO '교수번호',NAME '교수이름','교수' FROM professor; -- 공백표기시 문자열''
@@ -42,6 +43,7 @@ SELECT distinct POSITION FROM professor;
 -- 여러개의 컬럼앞의 distinct는 기술된 컬럼의 값들이 중복되지 않도록 조회함
 SELECT DISTINCT deptno,DISTINCT POSITION FROM professor -- (오류발생)
 SELECT DISTINCT deptno,POSITION FROM professor;
+
 /*
 select 칼럼명(컬럼, 리터널값('뉴스'), 연산된 컬럼(result*1.1),*(모든컬럼), 별명(NO '별명'), distinct(중복값제거)) 
 from   테이블명
@@ -49,7 +51,6 @@ where  레코드 선택 조건
        조건문이 없는 경우: 모든 레코드 조회
        조건문이 있는 경우: 조건문의 결과가 참인 레코드만 조회
 */
-
 -- 학생테이블(student)에서 1학년 학생의 모든 칼럼을 조회하기
 SELECT * FROM student WHERE grade = 1;
 -- 학생테이블(student)에서 3학년 학생 중 전공1코드(major1)가 101인 학생의
@@ -60,6 +61,7 @@ SELECT studno,NAME,grade,major1 FROM student WHERE grade=3 AND major1=101;
 -- 학번(studno), 이름(name), 학년(grade), 전공1학과(major1) 칼럼 조회하기
 SELECT studno,NAME,grade,major1 FROM student WHERE grade=3 OR major1=101;
 
+-- 관계연산자 : =,>,>=,<,<=,<>,!=
 -- 부서코드:10, 사원의 이름, 급여
 SELECT ename,salary,deptno FROM emp WHERE deptno = 10;
 -- 급여:800 이상,  사원의 이름, 급여
@@ -76,7 +78,7 @@ SELECT ename 사원이름,salary 현재급여,salary*0.05+salary 인상예상급
 SELECT NAME,major1,birthday,grade From student WHERE grade=1 AND birthday > '1995-06-30 00:00:00'; 
 
 /*
-where 조건문에서 사용되는 연산자 : 
+where 조건문에서 사용되는 연산자
 between : 범위 지정 연산자
 where 컬럼명 between A and B : 컬럼의 값이 A 이상 B이하인 레코드 선택
 */
@@ -89,9 +91,10 @@ SELECT NAME,weight FROM student WHERE weight BETWEEN 70 AND 80 AND grade=1;
 SELECT NAME,weight FROM student WHERE weight >= 70 AND weight <= 80 AND grade=1;
 -- 전공1학과 101 + 50 <= 몸무게 <= 80, 학생의 몸무게, 1전공학과코드 조회
 SELECT NAME,weight,major1 FROM student WHERE weight >= 50 AND weight <= 80 AND major1 = 101;
+
 /*
 where 조건문에서 사용되는연산자 : 
-in : 
+in : 컬럼명 in (A,B..) => 컬럼의 값이 A 또는 B인 경우
 or : 조건문으로 표현이 가능
 */
 -- 전공1 : 101,201, 학생의 이름,전공코드,학년 출력
@@ -121,7 +124,8 @@ SELECT NAME,studno,tel FROM student WHERE tel LIKE '02%';
 -- like : 대소문자 구분 안함.
 SELECT NAME,id,POSITION FROM professor WHERE id LIKE '%k%';
 SELECT NAME,id,POSITION FROM professor WHERE id LIKE '%K%';
--- 대소문자 구분 : binary
+
+-- 대소문자 구분 : binary. MariaDB에서만 사용, 오라클X
 SELECT NAME,id,POSITION FROM professor WHERE id LIKE binary '%k%';
 SELECT NAME,id,POSITION FROM professor WHERE id LIKE binary '%K%';
 
@@ -160,7 +164,9 @@ from 테이블명
 													select 문장의 마지막에 작성
 order by : 정렬관련 구문
 	오름차순정렬: 작은 값부터 큰값으로 asc 에약어.기본값.생략가능
-	내림차순정렬: 큰값에서 작은값으로 desc 예약어. 생략불가
+	내림차순정렬: 큰값에서 작은값으로 desc 예약어.생략불가
+order by 컬럼1, 컬럼2 => 컬럼1로 1차 정렬 후에 컬럼2로 2차 정렬
+	컬럼명, 조회된 컬럼의순서(1,2), 별명(예상급여) 
 */
 -- 1학년: 키 오름차순
 SELECT NAME,height FROM student WHERE grade = 1 ORDER BY height;
@@ -181,13 +187,3 @@ SELECT studno,NAME,profno,major1 FROM student WHERE profno IS NULL ORDER BY stud
 SELECT NAME FROM student WHERE grade = 1 ORDER BY 1 DESC;
 -- 1학년+키 작은순, 몸무게 큰순
 SELECT NAME,height,weight FROM student WHERE grade = 1 ORDER BY height,weight DESC;
-
--- 합집합 중복가능(union all)
-SELECT studno,NAME,major1 FROM student WHERE major1 = 202 
-UNION ALL SELECT studno,NAME,major1 FROM student WHERE major2 = 101;
--- 합집합 중복제거 (union)
-SELECT studno,NAME,major1 FROM student WHERE major1 = 202 
-UNION SELECT studno,NAME,major1 FROM student WHERE major2 = 101;
-
-SELECT NO,NAME,salary,salary*1.05 인상예정급여 FROM professor WHERE salary >= 450  UNION ALL
-SELECT NO,NAME,salary,salary*1.1 인상예정급여 FROM professor WHERE salary < 450 ORDER BY 인상예정급여 DESC;
