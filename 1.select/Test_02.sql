@@ -10,7 +10,7 @@ UNION
 SELECT NO AS 교수번호,NAME AS 이름,salary AS 급여,salary AS 인상급여 FROM professor WHERE bonus IS NOT NULL ORDER BY 인상급여 DESC;
 
 -- 3. 학생의 생일이 97년 이후인 학생의 학번, 이름, 생일을 출력하기
-SELECT studno AS 학번,NAME AS 이름,birthday AS 생일 FROM student WHERE birthday > '1997-01-01';
+SELECT studno AS 학번,NAME AS 이름,birthday AS 생일 FROM student WHERE birthday >= '1997-01-01';
 
 -- 4. 학생 테이블을 읽어 
 --   '학생이름의 생일은 yyyy-mm-dd  입니다. 축하합니다' 형태로 출력하기
@@ -18,7 +18,7 @@ SELECT CONCAT(NAME, '의 생일은 ', birthday, ' 입니다. 축하합니다!') 
 
 -- 5. 학생 테이블에서 학생 이름과키,몸무게, 표준체중을 출력하기
 --   표준 체중은 키에서 100을 뺀 값에 0.9를 곱한 값이다.
-SELECT NAME AS 이름,height AS 키,weight AS 몸무게,height - 100 *0.9 AS 표준체중 FROM student;
+SELECT NAME AS 이름,height AS 키,weight AS 몸무게,(height - 100) *0.9 AS 표준체중 FROM student;
 
 -- 6. 101 번 학과 학생 중에서 3학년 이상인 학생의  이름, 아이디, 학년을 출력하기
 SELECT NAME AS 이름,id AS 아이디,grade 학년 FROM student WHERE major1 = 101 AND grade = 3;
@@ -44,7 +44,7 @@ SELECT NAME AS 이름,POSITION AS 직책,email AS 이메일,LEFT(email, INSTR(em
 SELECT REPLACE(NAME, SUBSTR(NAME, 2, 1), '#') FROM student WHERE major1 = 101;
 
 -- 13. 102번 학과 학생의 이름과 전화번호, 전화번호의 국번부분만#으로 치환하여 출력하기(단 국번은 3자리로 간주함.)
-SELECT NAME AS 이름, tel AS 전화번호,REPLACE(tel, LEFT(tel, INSTR(tel, ')') - 1), '###') FROM student WHERE major1 = 102;
+SELECT NAME AS 이름, tel AS 전화번호,REPLACE(tel, SUBSTR(tel, INSTR(tel, ')') + 1,3), '###') FROM student WHERE major1 = 102;
 
 -- 14. 교수테이블의의  email 주소의 @다음의 3자리를 ###으로 치환하여 출력하기  교수의 이름, email, #mail을 출력하기
 SELECT name AS 이름,email AS 이메일,REPLACE(email, SUBSTR(email, INSTR(email, '@') + 1, 3), '###') FROM professor;
@@ -54,6 +54,8 @@ SELECT name AS 이름,email AS 이메일,REPLACE(email, SUBSTR(email, INSTR(emai
 
 -- 16. 사원테이블에서 사원이름에 *를 왼쪽에 채운  6자리수 이름과, 업무와 급여를 출력한다.
 SELECT LPAD(ename, 6,'*') AS 이름,job AS 업무,salary AS 급여 FROM emp; 
+-- 16-1. 양쪽에 ** 채운 7자리수의 이름과, 업무,급여
+SELECT RPAD(LPAD(ename, 5,'*'),7,'*') AS 이름,job AS 업무,salary AS 급여 FROM emp; 
 
 -- 17. 교수들의 이름과 근무 개월 수를 출력하기
 --    근무개월수는 현재 일을 기준으로  일자를 계산하여 30으로 나눈 후 개월 수는 절삭하여 정수로 출력하기
@@ -70,7 +72,12 @@ SELECT name AS 이름,SUBSTR(email, INSTR(email,'@')+1) AS 이메일서버  FROM
 --     20자리로 출력하고  동일한 학과의 학생의   이름과 id를 출력하는데,  학생의 id는 왼쪽#으로 채운 후 20자리로 출력하라.
 SELECT NAME AS 이름,RPAD(id,20,'$') AS id FROM professor WHERE deptno IN (101,201,301)
 UNION
-SELECT NAME AS 이름,LPAD(id,20,'#') AS id FROM student WHERE major1 IN (101,201,301)
+SELECT NAME AS 이름,LPAD(id,20,'#') AS id FROM student WHERE major1 IN (101,201,301);
+
+-- 20-1. '교수' 문자를 붙인, '학생' 문자를 붙인
+SELECT CONCAT(NAME, " 교수"), RPAD(id,20,'$') AS id FROM professor WHERE deptno IN (101,201,301)
+UNION
+SELECT CONCAT(NAME, " 학생"), LPAD(id,20,'#') AS id FROM student WHERE major1 IN (101,201,301);
 
 -- 21. 2025년 1월 10일 부터 2025년 5월 20일까지 개월수를 반올림해서 정수 출력하기
 SELECT ROUND(DATEDIFF('2025-05-20', '2025-01-10') / 30,0) AS 개월수;
