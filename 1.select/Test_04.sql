@@ -79,17 +79,45 @@ GROUP BY s.`name`;
 -- 11.이상미 교수와 같은 입사일에 입사한 교수 중 이영택교수 보다 
 --    월급을 적게받는 교수의 이름, 급여, 입사일 출력하기
 SELECT p1.`name`, p1.salary, p1.hiredate
-FROM professor p1, professor p2
-WHERE p1.`name` = "이상미" AND p2.`name`= "이영택"
+FROM professor p1, professor p2, professor p3
+WHERE p2.`name` = "이상미" AND p3.`name`= "이영택" AND p1.hiredate = p2.hiredate AND p1.salary < p3.salary
+GROUP BY p1.`name`;
+
 -- 12.101번 학과 학생들의 평균 몸무게 보다  
 --  	몸무게가 적은 학생의 학번과,이름과, 학과번호, 몸무게를 출력하기
+SELECT s1.studno AS 학번, s1.`name` AS 이름, s1.major1 AS 전공학과, s1.weight AS 몸무게
+FROM student s1, student s2
+WHERE s2.major1 = '101' 
+GROUP BY s1.studno
+HAVING s1.weight < AVG(s2.weight);
 
 -- 13. score 테이블과, scorebase 테이블을 이용하여 학점별 인원수,학점별평균값의 평균  조회하기
+SELECT s2.grade, COUNT(*) 인원수, ROUND(AVG(ROUND((s1.kor+eng+math)/3,0)),0) 평균 
+FROM score s1, scorebase s2
+WHERE ROUND((s1.kor+eng+math)/3,0) BETWEEN s2.min_point AND s2.max_point
+GROUP BY s2.grade;
 
 -- 14. 고객의 포인트로 상품을 받을 수 있을때 필요한 상품의 갯수를 조회하기
+SELECT g.`name` 이름, g.`point` 포인트, COUNT(*) 상품의갯수
+FROM guest g, pointitem p
+WHERE g.`point` >= p.spoint
+GROUP BY g.name;
+
+SELECT g.`name` 이름, g.`point` 포인트, COUNT(*) 상품의갯수
+FROM guest g JOIN pointitem p
+ON g.`point` >= p.spoint GROUP BY g.name;
 
 -- 15. 교수번호,이름,입사일, 입사일이 늦은 사람의 인원수 조회하기
 --  	 입사일이 늦은 순으로 정렬하여 출력하기
+SELECT p1.no, p1.`name`, p1.hiredate, COUNT(p2.hiredate)
+FROM professor p1 LEFT JOIN professor p2
+ON p1.hiredate < p2.hiredate
+GROUP BY p1.no
+ORDER BY p1.hiredate DESC;
 
 -- 16. major 테이블에서 학과코드, 학과명, 상위학과코드, 상위학과명 조회하기
 -- 	 모든 학과가 조회됨. => 상위학과가 없는 학과도 조회됨.
+SELECT m1.code,m1.`name`,m2.code,m2.`name`
+FROM major m1 LEFT JOIN major m2
+ON  m1.part = m2.code
+GROUP BY m1.code;
