@@ -121,3 +121,24 @@ SELECT m1.code,m1.`name`,m2.code,m2.`name`
 FROM major m1 LEFT JOIN major m2
 ON  m1.part = m2.code
 GROUP BY m1.code;
+
+/*
+   join 구문 : 여러개의 테이블을 연결하여 데이터 조회.
+     cross join : m*n개수로 레코드 생성. 사용시 주의요함
+     등가조인 (euqi join) : 조인컬럼을 이용하여 조건에 맞는 레코드만
+                            선택. 조인컬럼의 조건문이 = 인 경우
+     비등가조인 (non euqi join) : 조인컬럼을 이용하여 조건에 맞는 레코드만
+                            선택. 조인컬럼의 조건문이 = 이 아니 경우
+     self join(자기조인) : 같은 테이블을 join 하는 경우
+	                        테이블의 별명설정, 컬럼 조회시 별명 설정
+
+     inner join : 조인컬럼을 이용하여 조건에 맞는 레코드만 선택	                        
+     outer join : 조인컬럼을 이용하여 조건에 맞는 레코드만 선택. 
+                  한쪽 또는 양쪽테이블에서 조건 맞지 않아도 선택
+         left outer join : 왼쪽 테이블의 내용은 전부 조회
+                            left join 예약어
+         right outer join: 오른쪽 테이블의 내용은 전부 조회         
+                            right join 예약어
+         full outer join : 양쪽 테이블의 내용은 전부 조회        
+                            union 사용하여 구현
+*/

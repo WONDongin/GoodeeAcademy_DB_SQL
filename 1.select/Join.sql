@@ -149,7 +149,7 @@ ORDER BY COUNT(*) DESC, g.`name`
 SELECT g.`name`,COUNT(*) "상품의 갯수"
 FROM guest g JOIN pointitem p
 ON  g.`point` >=  p.spoint
-GROUP BY name
+GROUP BY NAME
 ORDER BY COUNT(*) DESC, g.`name`;
 
 -- 상품의 갯수가 2개의 이상인 정보 조회
@@ -289,28 +289,31 @@ SELECT s.name, p.name
 FROM student s RIGHT JOIN professor p
 ON s.profno = p.no
 
--- emp, p_grade 테이블 조인
--- 사원이름,직급,현재연봉,해당직급의 연봉하한,연봉사한 조회
--- 연봉 : (급여*12+보너스)*1000. 보너스 x : 0 처리
--- 단 모든 사원 출력
+-- 문제1
+--  emp, p_grade 테이블을 조인하여
+-- 사원이름, 직급, 현재연봉, 해당직급의 연봉하한,연봉상한 조회하기
+-- 연봉 : (급여*12+보너스)*10000. 보너스가 없는 경우 0으로 처리하기
+-- 단 모든 사원을 출력하기
 SELECT e.ename, e.job, (salary *12 + ifnull(bonus,0))*1000, p.s_pay, p.e_pay
 FROM emp e LEFT JOIN p_grade p
 on e.job = p.position
 ORDER BY e.empno
 
--- emp, p_grade 테이블 조인
--- 사원이름,입사일,직급,근속년도,현재직급,근속년도 기준 예상직급 출력
--- 근속년도: 오늘을 기준으로 입사일의 일자/365 나눈 후
--- 소숫점 이하는 버림
--- 단 모든 사원을 출력
+-- 문제 2
+-- emp, p_grade 테이블을 조인하여
+-- 사원이름, 입사일,직급, 근속년도, 현재직급,근속년도 기준 예상직급 출력하기
+-- 근속년도는 오늘을 기준으로 입사일의 일자/365 나눈후 
+-- 소숫점이하는 버림으로
+-- 단 모든 사원을 출력하기
 SELECT * FROM p_grade
 SELECT e.ename, e.hiredate, e.job, TRUNCATE(DATEDIFF(NOW(),e.hiredate)/365,0) 근속년수, p.`position`
 FROM emp e LEFT JOIN p_grade p
 ON TRUNCATE(DATEDIFF(NOW(),e.hiredate)/365,0) BETWEEN p.s_year AND p.e_year
 
--- 사원이름,생일,나이,현재직급, 나이 기준 예상직급 출력
--- 나이는 오늘을 기준으로 생일까지 일자/365 나눈후 소수점 이하 버림
--- 단 모든사원 출력
+-- 문제 3
+-- 사원이름, 생일,나이, 현재직product급,나이 기준 예상직급 출력하기
+-- 나이는 오늘을 기준으로 생일까지의 일자/365 나눈후 소숫점이하는 버림
+-- 단 모든 사원을 출력하기
 SELECT e.ename, e.birthday, TRUNCATE(DATEDIFF(NOW(),e.birthday)/365,0) 나이, e.job, p.`position`
 FROM emp e LEFT JOIN p_grade p
 ON TRUNCATE(DATEDIFF(NOW(),e.birthday)/365,0) BETWEEN p.s_age AND p.e_age
