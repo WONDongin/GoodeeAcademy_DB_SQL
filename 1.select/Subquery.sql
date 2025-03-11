@@ -140,7 +140,6 @@ SELECT e.ename,e.job,e.deptno,d.dname
 FROM emp e, dept d
 WHERE e.deptno = d.deptno
 -- join을 사용하지 않고 조회하기
-
 -- 컬럼부분에 subquery 사용하기 => 스칼라 sub query 방식
 SELECT ename,job,deptno, 
    (SELECT d.dname FROM dept d WHERE d.deptno = e.deptno ) 부서명
@@ -378,3 +377,5 @@ USE information_schema -- information_schema database 선택
                        -- information_schema의 테이블/뷰를 사용하기 
 SELECT * FROM table_constraints
 WHERE TABLE_NAME='professor_101'
+USE gdjdb
+SELECT * FROM student
