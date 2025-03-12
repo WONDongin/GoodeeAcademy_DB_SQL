@@ -269,7 +269,6 @@ SELECT * from depttest3
 -- 문제
 -- 교수테이블에서 101 학과 교수들만 professor_101 테이블로 생성하기
 -- 필요 컬럼 : 교부번호,이름,학과코드,직책,학과명
-
 CREATE TABLE professor_101 
 AS
 SELECT NO,p.NAME,deptno,POSITION,m.name mname
@@ -282,6 +281,8 @@ DESC professor_101
 
 -- 학생 테이블에서 1학년 학생들만 student1 테이블로 생성하기
 -- 필요컬럼 : 학번,이름,전공1학과코드, 학과명
+
+
 CREATE TABLE student1
 AS
 SELECT s.studno,s.name,s.major1,m.name mname
